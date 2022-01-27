@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  worker:
+    build: .
+    command:  celery -A background.celery_app.app worker
+    environment:
+      - CELERY_BROKER_URL=amqp://rabbitmq_server:5672
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - TZ=US/Pacific
+
+  dashboard:
+    build: .
+    command: celery -A background.celery_app flower --port=5555 --broker=amqp://rabbitmq_server:5672
+    ports:
+      - 5556:5555
+    environment:
+      - CELERY_BROKER_URL=amqp://rabbitmq_server:5672
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - worker
