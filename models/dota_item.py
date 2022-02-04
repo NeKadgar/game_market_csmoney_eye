@@ -1,4 +1,5 @@
 import datetime
+from sqlalchemy.exc import IntegrityError
 from extentions import db
 from models.base_item import BaseItem
 
@@ -17,10 +18,12 @@ class DotaItem(BaseItem):
         if instance:
             return instance, False
         instance = cls(name=name)
-        # TODO add communication with main base-item service
-        db.session.add(instance)
-        db.session.commit()
-        return instance, True
+        try:
+            db.session.add(instance)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+        return cls.query.filter_by(name=name).one(), True
 
 
 class DotaItemHistory(db.Model):
@@ -28,7 +31,6 @@ class DotaItemHistory(db.Model):
     __tablename__ = 'dota_item_history'
 
     id = db.Column(db.Integer, primary_key=True)
-    # TODO figure out difference between price and default price
     price = db.Column(db.Numeric(precision=6, scale=2), nullable=False)
     default_price = db.Column(db.Numeric(precision=6, scale=2), nullable=False)
     slots = db.Column(db.JSON, default=None, nullable=True)

@@ -6,4 +6,4 @@ class BaseItem(db.Model):
     __abstract__ = True
 
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(128), nullable=False)
+    name = db.Column(db.String(128), unique=True, nullable=False)
