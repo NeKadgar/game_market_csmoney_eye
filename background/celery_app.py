@@ -12,8 +12,7 @@ default_exchange = Exchange("default_csmoney", type="direct")  # Internal connec
 providers_exchange = Exchange("providers_exchange", type="direct")  # External connections queue
 
 app.conf.task_queues = (
-    Queue("items_base_queue", providers_exchange, routing_key="items_base_route"),  # noqa
-    Queue("csmoney_queue", default_exchange, routing_key="csmoney_route") # noqa
+    Queue("csmoney_queue", default_exchange, routing_key="csmoney_route"), # noqa
 )
 
 app.conf.beat_schedule = {
