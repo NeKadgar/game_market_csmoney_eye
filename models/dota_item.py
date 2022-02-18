@@ -12,6 +12,16 @@ class DotaItem(BaseItem):
     def __repr__(self):
         return f"{self.id}.{self.name}"
 
+    @property
+    def as_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "history": [
+                history.as_dict for history in self.history.order_by(DotaItemHistory.date.desc())
+            ]
+        }
+
     @classmethod
     def get_or_create(cls, name: str, **kwargs):
         instance = cls.query.filter_by(name=name).one_or_none()
@@ -36,6 +46,15 @@ class DotaItemHistory(db.Model):
     slots = db.Column(db.JSON, default=None, nullable=True)
     date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     item_id = db.Column(db.Integer, db.ForeignKey('dota_item.id'))
+
+    @property
+    def as_dict(self):
+        return {
+            "price": self.price,
+            "date": self.date.strftime("%d.%m.%Y %H:%M"),
+            "default_price": self.default_price,
+            "slots": self.slots
+        }
 
     def __repr__(self):
         return f"< {self.item} - {self.price} >"
