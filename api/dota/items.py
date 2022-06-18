@@ -21,6 +21,9 @@ def test_task():
     response = client.fetch_items(offset=0)
     a = []
     # parse.delay()
+    print(response["items"])
+    print(response["items"][0].get("id"))
+    print(response["items"][0].get("appId"))
     for item in response["items"]:
         detail_item = client.fetch_details(item.get("id"), item.get("appId"))
         a.append(detail_item)
