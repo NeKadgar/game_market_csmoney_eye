@@ -33,7 +33,7 @@ class DotaItem(BaseItem):
             db.session.commit()
         except IntegrityError:
             db.session.rollback()
-        return cls.query.filter_by(name=name).one(), True
+        return cls.query.filter_by(name=name).one_or_none(), True
 
 
 class DotaItemHistory(db.Model):

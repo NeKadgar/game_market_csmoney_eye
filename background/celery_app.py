@@ -19,7 +19,7 @@ app.conf.beat_schedule = {
     # Executes every 2 hours
     "parse": {
         "task": "background.tasks.parser.parse",
-        "schedule": timedelta(hours=1),
+        "schedule": timedelta(seconds=10),
         'options': {
             'queue': 'csmoney_queue',
             # 'expires': timedelta(seconds=5),

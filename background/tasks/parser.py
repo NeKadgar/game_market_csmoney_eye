@@ -39,13 +39,14 @@ def parse():
                 }
             )
             dota_item, _ = DotaItem.get_or_create(detail_item.get("steamName"))
-            history = DotaItemHistory(
-                price=item.get("price"),
-                default_price=item.get("defaultPrice"),
-                slots=detail_item.get("slots"),
-                item_id=dota_item.id
-            )
-            db.session.add(history)
+            if dota_item:
+                history = DotaItemHistory(
+                    price=item.get("price"),
+                    default_price=item.get("defaultPrice"),
+                    slots=detail_item.get("slots"),
+                    item_id=dota_item.id
+                )
+                db.session.add(history)
             db.session.commit()
     return {
         "start": str(start_datetime),

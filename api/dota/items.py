@@ -24,6 +24,7 @@ def test_task():
     for item in response["items"]:
         detail_item = client.fetch_details(item.get("id"), item.get("appId"))
         a.append(detail_item)
+        break
     return {"items": a}
 
 
