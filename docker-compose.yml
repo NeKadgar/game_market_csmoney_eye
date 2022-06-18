@@ -3,7 +3,7 @@ version: '3.8'
 services:
   worker:
     build: .
-    command:  celery -A background.celery_app.app worker --loglevel=INFO -Q csmoney_queue -P solo
+    command:  celery -A background.celery_app.app worker --loglevel=INFO -Q csmoney_queue -P solo -n csmoney
     restart: always
     env_file:
       - .env
