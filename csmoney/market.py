@@ -55,5 +55,4 @@ class Market:
             "botInventory": "true" if bot_inventory else "false"
         }
         response = self.client.get(f"{SKIN_INFO_URL}", params=params)
-        print(response.url)
         return response.json()

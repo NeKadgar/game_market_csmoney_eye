@@ -1,6 +1,6 @@
 import datetime
 import itertools
-
+from decimal import Decimal
 from extentions import db
 from csmoney.client import Client
 from csmoney.market import Market as MarketClient
@@ -22,7 +22,22 @@ def parse():
             break
         for item in response["items"]:
             detail_item = client.fetch_details(item.get("id"), item.get("appId"))
-            celery_app.send_task(name="update_items_base", queue="items_base_queue", kwargs=detail_item)
+            heroes = detail_item.get("heroes")
+            celery_app.send_task(
+                name="update_service_price",
+                queue="items_base_queue",
+                kwargs={
+                    "game_id": 570,
+                    "item_hash_name": detail_item.get("steamName"),
+                    "price": Decimal(item.get("price")),
+                    "service": "CSMONEY",
+                    "hero_name": heroes[0] if heroes else None,
+                    "rarity": detail_item.get("rarity"),
+                    "item_type": detail_item.get("type"),
+                    "slot": detail_item.get("slot"),
+                    "quality": detail_item.get("quality")
+                }
+            )
             dota_item, _ = DotaItem.get_or_create(detail_item.get("steamName"))
             history = DotaItemHistory(
                 price=item.get("price"),
