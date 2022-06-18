@@ -38,6 +38,8 @@ class Market:
             params["weapon"] = weapon
         response = self.client.get(f"{INVENTORY_URL}{game_id}", params=params)
         print(response.status_code)
+        print(response.json())
+        print(response.text)
         return response.json()
 
     def fetch_details(self, item_id: int, game_id: int = 570, is_bot: bool = True, bot_inventory: bool = True):
