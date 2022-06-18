@@ -7,6 +7,12 @@ services:
     restart: always
     env_file:
       - .env
+  beat:
+    build: .
+    command: celery -A background.celery_app.app beat
+    restart: always
+    env_file:
+      - .env
   server:
     build: .
     restart: always
