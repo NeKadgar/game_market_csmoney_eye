@@ -1,7 +1,7 @@
 import enum
 
-INVENTORY_URL = "http://inventories.cs.money/5.0/load_bots_inventory/"
-SKIN_INFO_URL = "http://cs.money/skin_info"
+INVENTORY_URL = "https://inventories.cs.money/5.0/load_bots_inventory/"
+SKIN_INFO_URL = "https://cs.money/skin_info"
 
 
 class CSGOType(enum.Enum):
